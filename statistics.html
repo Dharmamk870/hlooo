@@ -2,10 +2,20 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Statistics</title>
+
   <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
@@ -20,53 +30,196 @@
 
   <h1>Statistics</h1>
 
+  <br>
+
   <div class="summary">
 
     <div>
       <p>Total Income</p>
-      <h2 id="totalIncome">₹0</h2>
+      <h2 id="totalIncome" class="income">₹0</h2>
     </div>
 
     <div>
       <p>Total Expenses</p>
-      <h2 id="totalExpenses">₹0</h2>
+      <h2 id="totalExpenses" class="expense">₹0</h2>
     </div>
 
   </div>
 
   <div class="balance-card">
+
     <p>Remaining Balance</p>
-    <h2 id="remaining">₹0</h2>
+
+    <h2 id="remaining">
+      ₹0
+    </h2>
+
+  </div>
+
+  <div class="form-card">
+
+    <h2>Income vs Expenses</h2>
+
+    <canvas id="pieChart"></canvas>
+
+  </div>
+
+  <div class="form-card">
+
+    <h2>Daily Income & Expenses</h2>
+
+    <canvas id="dailyChart"></canvas>
+
   </div>
 
 </div>
 
 <script>
 
-  const transactions =
-    JSON.parse(localStorage.getItem("transactions")) || [];
+const transactions =
+  JSON.parse(localStorage.getItem("transactions")) || [];
 
-  let income = 0;
-  let expenses = 0;
+let income = 0;
+let expenses = 0;
 
-  transactions.forEach(transaction => {
+transactions.forEach(transaction => {
 
-    if (transaction.type === "income") {
-      income += transaction.amount;
-    } else {
-      expenses += transaction.amount;
+  if (transaction.type === "income") {
+    income += transaction.amount;
+  } else {
+    expenses += transaction.amount;
+  }
+
+});
+
+document.getElementById("totalIncome").textContent =
+  `₹${income}`;
+
+document.getElementById("totalExpenses").textContent =
+  `₹${expenses}`;
+
+document.getElementById("remaining").textContent =
+  `₹${income - expenses}`;
+
+
+// -------------------------
+// PIE CHART
+// -------------------------
+
+new Chart(
+  document.getElementById("pieChart"),
+  {
+    type: "pie",
+
+    data: {
+      labels: [
+        "Income",
+        "Expenses"
+      ],
+
+      datasets: [{
+        data: [
+          income,
+          expenses
+        ]
+      }]
+    }
+  }
+);
+
+
+// -------------------------
+// DAILY DATA
+// -------------------------
+
+const dailyData = {};
+
+transactions.forEach(transaction => {
+
+  if (!dailyData[transaction.date]) {
+
+    dailyData[transaction.date] = {
+      income: 0,
+      expenses: 0
+    };
+
+  }
+
+  if (transaction.type === "income") {
+
+    dailyData[transaction.date].income +=
+      transaction.amount;
+
+  } else {
+
+    dailyData[transaction.date].expenses +=
+      transaction.amount;
+
+  }
+
+});
+
+const dates =
+  Object.keys(dailyData).sort();
+
+const dailyIncome =
+  dates.map(date =>
+    dailyData[date].income
+  );
+
+const dailyExpenses =
+  dates.map(date =>
+    dailyData[date].expenses
+  );
+
+
+// -------------------------
+// DAILY LINE GRAPH
+// -------------------------
+
+new Chart(
+  document.getElementById("dailyChart"),
+  {
+    type: "line",
+
+    data: {
+
+      labels: dates,
+
+      datasets: [
+
+        {
+          label: "Income",
+          data: dailyIncome,
+          borderWidth: 2
+        },
+
+        {
+          label: "Expenses",
+          data: dailyExpenses,
+          borderWidth: 2
+        }
+
+      ]
+
+    },
+
+    options: {
+
+      responsive: true,
+
+      scales: {
+
+        y: {
+          beginAtZero: true
+        }
+
+      }
+
     }
 
-  });
-
-  document.getElementById("totalIncome").textContent =
-    `₹${income}`;
-
-  document.getElementById("totalExpenses").textContent =
-    `₹${expenses}`;
-
-  document.getElementById("remaining").textContent =
-    `₹${income - expenses}`;
+  }
+);
 
 </script>
 
