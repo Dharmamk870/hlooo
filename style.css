@@ -11,8 +11,23 @@ body {
 }
 
 .container {
-  max-width: 600px;
+  max-width: 650px;
   margin: auto;
+}
+
+nav {
+  background: white;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #222;
+  margin: 0 10px;
+  font-weight: bold;
 }
 
 header {
@@ -25,7 +40,7 @@ header h1 {
 }
 
 .balance-card {
-  background: #ffffff;
+  background: white;
   padding: 25px;
   border-radius: 15px;
   text-align: center;
@@ -49,6 +64,14 @@ header h1 {
   padding: 20px;
   border-radius: 15px;
   text-align: center;
+}
+
+.income {
+  color: green;
+}
+
+.expense {
+  color: red;
 }
 
 .form-card,
@@ -81,10 +104,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 0.85;
-}
-
 #transactionList {
   list-style: none;
 }
@@ -92,31 +111,17 @@ button:hover {
 .transaction {
   display: flex;
   justify-content: space-between;
-  padding: 12px;
+  align-items: center;
+  padding: 15px 5px;
   border-bottom: 1px solid #eee;
 }
 
-.income {
-  color: green;
+.transaction div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.expense {
-  color: red;
-}
-nav {
-  background: white;
-  padding: 15px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-nav a {
-  text-decoration: none;
-  color: #222;
-  margin: 0 10px;
-  font-weight: bold;
-}
-
-nav a:hover {
-  text-decoration: underline;
+.transaction small {
+  color: #777;
 }
