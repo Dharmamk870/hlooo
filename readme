@@ -1,0 +1,29 @@
+# Expense Tracker
+
+A simple web application for tracking income and expenses.
+
+## Features
+
+- Add income
+- Add expenses
+- View total balance
+- View transaction history
+- Simple responsive interface
+
+## Technologies Used
+
+- HTML
+- CSS
+- JavaScript
+
+## How to Run
+
+Download the project and open `index.html` in a web browser.
+
+## Future Improvements
+
+- Add categories
+- Add charts
+- Save transactions
+- Add login
+- Add monthly expense reports
