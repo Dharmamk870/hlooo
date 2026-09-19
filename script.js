@@ -1,8 +1,9 @@
-let transactions = [];
+let transactions =
+  JSON.parse(localStorage.getItem("transactions")) || [];
 
 function addTransaction() {
   const description =
-    document.getElementById("description").value;
+    document.getElementById("description").value.trim();
 
   const amount =
     Number(document.getElementById("amount").value);
@@ -10,18 +11,21 @@ function addTransaction() {
   const type =
     document.getElementById("type").value;
 
-  if (!description || !amount) {
-    alert("Please enter description and amount.");
+  if (!description || !amount || amount <= 0) {
+    alert("Please enter a valid description and amount.");
     return;
   }
 
-  const transaction = {
+  transactions.push({
     description: description,
     amount: amount,
     type: type
-  };
+  });
 
-  transactions.push(transaction);
+  localStorage.setItem(
+    "transactions",
+    JSON.stringify(transactions)
+  );
 
   document.getElementById("description").value = "";
   document.getElementById("amount").value = "";
@@ -33,7 +37,10 @@ function updateUI() {
   let income = 0;
   let expenses = 0;
 
-  const list = document.getElementById("transactionList");
+  const list =
+    document.getElementById("transactionList");
+
+  if (!list) return;
 
   list.innerHTML = "";
 
@@ -59,8 +66,6 @@ function updateUI() {
     list.appendChild(li);
   });
 
-  const balance = income - expenses;
-
   document.getElementById("income").textContent =
     `₹${income}`;
 
@@ -68,5 +73,7 @@ function updateUI() {
     `₹${expenses}`;
 
   document.getElementById("balance").textContent =
-    `₹${balance}`;
+    `₹${income - expenses}`;
 }
+
+updateUI();
