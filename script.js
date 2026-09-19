@@ -2,6 +2,7 @@ let transactions =
   JSON.parse(localStorage.getItem("transactions")) || [];
 
 function addTransaction() {
+
   const description =
     document.getElementById("description").value.trim();
 
@@ -11,16 +12,22 @@ function addTransaction() {
   const type =
     document.getElementById("type").value;
 
-  if (!description || !amount || amount <= 0) {
-    alert("Please enter a valid description and amount.");
+  const date =
+    document.getElementById("date").value;
+
+  if (!description || !amount || amount <= 0 || !date) {
+    alert("Please fill all fields.");
     return;
   }
 
-  transactions.push({
+  const transaction = {
     description: description,
     amount: amount,
-    type: type
-  });
+    type: type,
+    date: date
+  };
+
+  transactions.push(transaction);
 
   localStorage.setItem(
     "transactions",
@@ -29,11 +36,13 @@ function addTransaction() {
 
   document.getElementById("description").value = "";
   document.getElementById("amount").value = "";
+  document.getElementById("date").value = "";
 
   updateUI();
 }
 
 function updateUI() {
+
   let income = 0;
   let expenses = 0;
 
@@ -57,7 +66,11 @@ function updateUI() {
     li.className = "transaction";
 
     li.innerHTML = `
-      <span>${transaction.description}</span>
+      <div>
+        <strong>${transaction.description}</strong>
+        <small>${transaction.date}</small>
+      </div>
+
       <span class="${transaction.type}">
         ${transaction.type === "income" ? "+" : "-"}₹${transaction.amount}
       </span>
