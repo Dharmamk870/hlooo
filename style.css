@@ -103,3 +103,20 @@ button:hover {
 .expense {
   color: red;
 }
+nav {
+  background: white;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: #222;
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
